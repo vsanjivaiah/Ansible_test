@@ -1,0 +1,23 @@
+- name: Create a new application pool - ansiblepool in 'Started' state
+  win_iis_webapppool:
+  name: ansiblepool
+  state: started
+
+- name: IIS site
+  win_iis_website:
+  name: iis_via_ansible.org
+  state: started
+  port: 80
+  ip: 127.0.0.1
+  hostname: localhost
+  application_pool: ansiblepool
+  physical_path: C:\sites\
+  parameters: logfile.directory:C:\sites\logs
+  register: website
+
+- name: Add api webapplication on IIS.
+  win_iis_webapplication:
+  name: api
+  site: iis_via_ansible.org
+  state: present
+  physical_path: C:\sites\api
