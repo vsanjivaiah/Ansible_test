@@ -74,7 +74,7 @@
 #         name: ansiblepool
 #         state: started
 - name: debug Info
-  hosts: all
+  hosts: localhost
   vars:
     ansible_doc: /home/admin/.local/bin/ansible-doc
     modules_all: "{{ (out.stdout|from_yaml).keys()|list }}"
