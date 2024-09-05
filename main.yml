@@ -2,9 +2,18 @@
 - name: debug Info
   hosts: all
   tasks:
-    - win_feature:
-       name: Web-Server
-       state: present
-       restart: yes
-       include_sub_features: yes
-       include_management_tools: yes
+    - name: install IIS
+      win_feature:
+        name: Web-Server
+        state: present
+        restart: yes
+        include_sub_features: yes
+        include_management_tools: yes
+    - name: create User Bob
+      windows.win_user:
+        name: bob
+        password: B0bP4ssw0rd
+        state: present
+        groups:
+          - Users
+
