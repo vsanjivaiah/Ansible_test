@@ -36,8 +36,47 @@
 #       win_iis_webapppool:
 #         name: ansiblepool
 #         state: started
-vars:
+---
+# - name: Install IIS
+#   hosts: all
+#   tasks:
+#     - name: Create a new application pool - ansiblepool in 'Started' state
+#       win_iis_webapppool:
+#         name: ansiblepool
+#         state: started
+    
+#     - name: IIS site
+#       win_iis_website:
+#         name: iis_via_ansible.org
+#         state: started
+#         port: 80
+#         ip: 127.0.0.1
+#         hostname: localhost
+#         application_pool: ansiblepool
+#         physical_path: C:\sites\
+#         parameters: logfile.directory:C:\sites\logs
+#         register: website
+    
+#     - name: Add api webapplication on IIS.
+#       win_iis_webapplication:
+#         name: api
+#         site: iis_via_ansible.org
+#         state: present
+#         physical_path: C:\sites\api
 
+# - name: Hello World Sample
+#   hosts: all
+#   tasks:
+#     - name: Hello Message
+#       debug:
+#         msg: "Hello World!"
+#     - name: Create a new application pool - ansiblepool in 'Started' state
+#       win_iis_webapppool:
+#         name: ansiblepool
+#         state: started
+- name: debug Info
+  hosts: all
+  vars:
     ansible_doc: /home/admin/.local/bin/ansible-doc
     modules_all: "{{ (out.stdout|from_yaml).keys()|list }}"
     modules_str: |
@@ -49,8 +88,9 @@ vars:
     collections_list: "{{ modules_grp|map('first') }}"
     modules_lists: "{{ modules_grp|map('last')|map('map', attribute='module') }}"
     collections: "{{ dict(collections_list|zip(modules_lists)) }}"
-tasks:
-
+  
+  tasks:
+    
     - command: "{{ ansible_doc }} -t module -l -j"
       register: out
 
@@ -78,3 +118,6 @@ tasks:
     - debug:
         var: collections['community.general']|to_yaml
       when: true
+
+
+  
