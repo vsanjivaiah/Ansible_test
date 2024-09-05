@@ -1,122 +1,31 @@
 ---
-# - name: Install IIS
-#   hosts: all
-#   tasks:
-#     - name: Create a new application pool - ansiblepool in 'Started' state
-#       win_iis_webapppool:
-#         name: ansiblepool
-#         state: started
-    
-#     - name: IIS site
-#       win_iis_website:
-#         name: iis_via_ansible.org
-#         state: started
-#         port: 80
-#         ip: 127.0.0.1
-#         hostname: localhost
-#         application_pool: ansiblepool
-#         physical_path: C:\sites\
-#         parameters: logfile.directory:C:\sites\logs
-#         register: website
-    
-#     - name: Add api webapplication on IIS.
-#       win_iis_webapplication:
-#         name: api
-#         site: iis_via_ansible.org
-#         state: present
-#         physical_path: C:\sites\api
-
-# - name: Hello World Sample
-#   hosts: all
-#   tasks:
-#     - name: Hello Message
-#       debug:
-#         msg: "Hello World!"
-#     - name: Create a new application pool - ansiblepool in 'Started' state
-#       win_iis_webapppool:
-#         name: ansiblepool
-#         state: started
-# - name: Install IIS
-#   hosts: all
-#   tasks:
-#     - name: Create a new application pool - ansiblepool in 'Started' state
-#       win_iis_webapppool:
-#         name: ansiblepool
-#         state: started
-    
-#     - name: IIS site
-#       win_iis_website:
-#         name: iis_via_ansible.org
-#         state: started
-#         port: 80
-#         ip: 127.0.0.1
-#         hostname: localhost
-#         application_pool: ansiblepool
-#         physical_path: C:\sites\
-#         parameters: logfile.directory:C:\sites\logs
-#         register: website
-    
-#     - name: Add api webapplication on IIS.
-#       win_iis_webapplication:
-#         name: api
-#         site: iis_via_ansible.org
-#         state: present
-#         physical_path: C:\sites\api
-
-# - name: Hello World Sample
-#   hosts: all
-#   tasks:
-#     - name: Hello Message
-#       debug:
-#         msg: "Hello World!"
-#     - name: Create a new application pool - ansiblepool in 'Started' state
-#       win_iis_webapppool:
-#         name: ansiblepool
-#         state: started
 - name: debug Info
-  hosts: localhost
-  vars:
-    ansible_doc: /home/admin/.local/bin/ansible-doc
-    modules_all: "{{ (out.stdout|from_yaml).keys()|list }}"
-    modules_str: |
-      {% for i in modules_all %}
-      {% set arr = i.split('.') %}
-      - {collection: {{ arr[:-1]|join('.')|d('ansible.builtin', true) }}, module: {{ arr[-1] }}}
-      {% endfor %}
-    modules_grp: "{{ modules_str|from_yaml|groupby('collection') }}"
-    collections_list: "{{ modules_grp|map('first') }}"
-    modules_lists: "{{ modules_grp|map('last')|map('map', attribute='module') }}"
-    collections: "{{ dict(collections_list|zip(modules_lists)) }}"
-  
+  hosts: all
   tasks:
+    - name: Create a new application pool - ansiblepool in 'Started' state
+      win_iis_webapppool:
+        name: ansiblepool
+        state: started
     
-    - command: "{{ ansible_doc }} -t module -l -j"
-      register: out
-
-    - debug:
-        var: out.stdout_lines
-      when: false
-    - debug:
-        var: out.stdout
-      when: false
-    - debug:
-        var: modules_all
-      when: false
-    - debug:
-        var: modules_str
-      when: false
-    - debug:
-        var: collections.keys()|list|to_yaml
-      when: true
-    - debug:
-        var: collections['ansible.builtin']|to_yaml
-      when: true
-    - debug:
-        var: collections['community.digitalocean']|to_yaml
-      when: true
-    - debug:
-        var: collections['community.general']|to_yaml
-      when: true
-
-
-  
+    - name: IIS site
+      win_iis_website:
+        name: iis_via_ansible.org
+        state: started
+        port: 80
+        ip: 127.0.0.1
+        hostname: localhost
+        application_pool: ansiblepool
+        physical_path: C:\sites\
+        parameters: logfile.directory:C:\sites\logs
+        register: website
+    
+    - name: Add api webapplication on IIS.
+      win_iis_webapplication:
+        name: api
+        site: iis_via_ansible.org
+        state: present
+        physical_path: C:\sites\api
+    - name: Create a new application pool - ansiblepool in 'Started' state
+      win_iis_webapppool:
+        name: ansiblepool
+        state: started
