@@ -36,7 +36,6 @@
 #       win_iis_webapppool:
 #         name: ansiblepool
 #         state: started
----
 # - name: Install IIS
 #   hosts: all
 #   tasks:
